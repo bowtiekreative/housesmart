@@ -29,7 +29,7 @@ export const POST: APIRoute = async ({ request }) => {
   if (notify) {
     sendMail({
       to: notify,
-      subject: `New HomeSmart lead: ${name}`,
+      subject: `New HouseSmart lead: ${name}`,
       text: `Name: ${name}\nEmail: ${email}\nPhone: ${form.get('phone') || '-'}\nProject: ${form.get('project') || '-'}\nPage: ${form.get('jtbd_slug') || '-'}\n\n${form.get('message') || ''}`,
     }).catch((err) => console.error('Lead notify failed:', err));
   }

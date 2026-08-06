@@ -4,7 +4,7 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: process.env.SITE_URL || 'https://homesmart.ca',
+  site: process.env.SITE_URL || 'https://housesmart.ca',
   output: 'server',
   adapter: node({ mode: 'standalone' }),
   integrations: [react()],

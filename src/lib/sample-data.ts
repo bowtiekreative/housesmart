@@ -10,7 +10,7 @@ export const SAMPLE_POSTS: JtbdPost[] = [
     slug: 'stop-rim-joist-air-leaks-before-drywall',
     title: 'Stop Rim Joist Air Leaks Before the Drywall Crew Shows Up',
     date: '2026-08-01T08:00:00',
-    meta_title: 'Rim Joist Air Sealing: The 2-Hour Fix That Saves 15% on Heating | HomeSmart.ca',
+    meta_title: 'Rim Joist Air Sealing: The 2-Hour Fix That Saves 15% on Heating | HouseSmart.ca',
     meta_description:
       'Rim joists leak more air than most windows. Here is the two-hour spray foam and caulk sequence we use before insulation inspection, with the exact materials list.',
     content_markdown: `Rim joists leak more conditioned air than every window in the house combined. We measured it with a blower door on three builds last winter: 30 to 40 percent of total leakage traced back to that one band of framing.
@@ -49,14 +49,14 @@ Skip the fiberglass batts alone. Air moves straight through them, and in a cold 
       solution_concept: 'Cut-and-cobble foam board with sprayed perimeter seal across every accessible bay',
     },
     solution_status: 'Existing',
-    source_name: 'HomeSmart field notes',
+    source_name: 'HouseSmart field notes',
   },
   {
     id: 'sample-2',
     slug: 'schedule-concrete-pours-around-heat-waves',
     title: 'Scheduling Concrete Pours Around Heat Waves Without Losing the Week',
     date: '2026-07-28T08:00:00',
-    meta_title: 'Hot Weather Concrete: Pour Scheduling That Beats 30°C Days | HomeSmart.ca',
+    meta_title: 'Hot Weather Concrete: Pour Scheduling That Beats 30°C Days | HouseSmart.ca',
     meta_description:
       'Above 27°C, concrete sets fast enough to wreck a finish. Here is how we re-sequence pours, order ice, and keep the crew productive when the forecast turns.',
     content_markdown: `Above 27°C, a standard mix can hit initial set before your finishers get across a 40-square slab. You either pour smarter or you grind out cold joints.
@@ -97,14 +97,14 @@ If the forecast shows three days over 30, flip the schedule: put framing, backfi
       solution_concept: 'Invert the trade schedule so pours land in cool windows and heat-tolerant work fills the hot ones',
     },
     solution_status: 'Existing',
-    source_name: 'HomeSmart field notes',
+    source_name: 'HouseSmart field notes',
   },
   {
     id: 'sample-3',
     slug: 'prefab-wall-panels-small-builder-math',
     title: 'Prefab Wall Panels: The Real Math for a Small Builder',
     date: '2026-07-21T08:00:00',
-    meta_title: 'Are Prefab Wall Panels Worth It for Small Builders? Real Cost Breakdown | HomeSmart.ca',
+    meta_title: 'Are Prefab Wall Panels Worth It for Small Builders? Real Cost Breakdown | HouseSmart.ca',
     meta_description:
       'Panelized walls cost 8-12% more on paper. We ran the numbers across three builds and the cycle-time savings flipped the math. Full breakdown inside.',
     content_markdown: `Panelized walls quote 8 to 12 percent above stick-frame material-and-labour on every estimate we have seen. Small builders look at that line and walk away. We almost did.
@@ -143,6 +143,6 @@ Change orders after release are brutal. A moved window that costs an hour in sti
       solution_concept: 'Cross factory fabrication with site-overhead accounting to justify the unit-price premium',
     },
     solution_status: 'Existing',
-    source_name: 'HomeSmart field notes',
+    source_name: 'HouseSmart field notes',
   },
 ];

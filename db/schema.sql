@@ -1,4 +1,4 @@
--- HomeSmart.ca — PostgreSQL schema for auth, bookmarks, and lead capture.
+-- HouseSmart.ca — PostgreSQL schema for auth, bookmarks, and lead capture.
 -- Idempotent: safe to run repeatedly (npm run db:init).
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;

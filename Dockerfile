@@ -1,4 +1,4 @@
-# HomeSmart.ca — Astro SSR web app (also used for the RSS worker with a
+# HouseSmart.ca — Astro SSR web app (also used for the RSS worker with a
 # different command; see docker-compose.yml).
 FROM node:22-alpine AS build
 WORKDIR /app

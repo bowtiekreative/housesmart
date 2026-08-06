@@ -1,5 +1,5 @@
 /**
- * HomeSmart.ca — Feed ingestion + AI processing pipeline.
+ * HouseSmart.ca — Feed ingestion + AI processing pipeline.
  *
  * 1. Pulls construction / home-building / architecture RSS feeds.
  * 2. Sends each fresh item to DeepSeek (deepseek-v4-flash, JSON mode) which
@@ -84,7 +84,7 @@ export const BANNED_WORDS = [
   'in today’s', "in today's", 'ever-evolving', 'holistic', 'synergy',
 ];
 
-const SYSTEM_PROMPT = `You are a senior construction consultant who writes field notes for HomeSmart.ca, a Canadian site read by builders, renovators, and serious homeowners. You analyze industry news and turn it into practical innovation blueprints.
+const SYSTEM_PROMPT = `You are a senior construction consultant who writes field notes for HouseSmart.ca, a Canadian site read by builders, renovators, and serious homeowners. You analyze industry news and turn it into practical innovation blueprints.
 
 ## Task
 Given a news item, do all of the following and return ONE JSON object:
@@ -107,7 +107,7 @@ Given a news item, do all of the following and return ONE JSON object:
 - Vary sentence length. Short punchy points mixed with complete technical breakdowns. Real numbers, temperatures, costs, dimensions, code references wherever the source supports them.
 - No balanced corporate summaries, no artificial fluff, no "In conclusion" endings. End on a concrete recommendation or a caution.
 - BANNED words/phrases (never use, any casing): delve, tapestry, game-changer, seamless, revolutionary, testament, spearhead, elevate, robust, paramount, unleash, navigating/navigate the, landscape, vital, realm, furthermore, moreover, dive into, unlock, leverage, cutting-edge, transformative, "in today's", ever-evolving, holistic, synergy.
-- meta_title: under 60 chars plus " | HomeSmart.ca", written for search intent, not clickbait.
+- meta_title: under 60 chars plus " | HouseSmart.ca", written for search intent, not clickbait.
 - meta_description: 140-160 chars, states the concrete problem and fix.
 
 ## Output — return ONLY this JSON object, nothing else
@@ -348,7 +348,7 @@ async function fetchFeedItems(): Promise<FeedItem[]> {
 /* -------------------------------------------------------------------- run */
 
 export async function run(): Promise<void> {
-  console.log(`HomeSmart RSS processor — ${ACTIVE_FEEDS.length} feeds, max ${MAX_ITEMS_PER_RUN} posts/run`);
+  console.log(`HouseSmart RSS processor — ${ACTIVE_FEEDS.length} feeds, max ${MAX_ITEMS_PER_RUN} posts/run`);
   const items = await fetchFeedItems();
   let published = 0;
 

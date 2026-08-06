@@ -140,7 +140,7 @@ export async function issueMagicLink(email: string, siteUrl: string): Promise<vo
   const link = `${siteUrl.replace(/\/$/, '')}/api/auth/magic-verify?token=${token}`;
   await sendMail({
     to: normalized,
-    subject: 'Your HomeSmart.ca login link',
+    subject: 'Your HouseSmart.ca login link',
     text: `Click to log in (valid for ${MAGIC_LINK_MINUTES} minutes):\n\n${link}\n\nIf you didn't request this, ignore it.`,
   });
 }

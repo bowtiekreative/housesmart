@@ -1,7 +1,7 @@
 {
-  "name": "homesmart",
+  "name": "housesmart",
   "version": "1.0.0",
-  "description": "HomeSmart.ca — programmatic SEO/GEO blog platform for construction & home-building innovations (JTBD engine)",
+  "description": "HouseSmart.ca — programmatic SEO/GEO blog platform for construction & home-building innovations (JTBD engine)",
   "type": "module",
   "scripts": {
     "dev": "astro dev",

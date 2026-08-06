@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* HomeSmart.ca brand: deep spruce green + safety amber on warm neutrals */
+  /* HouseSmart.ca brand: deep spruce green + safety amber on warm neutrals */
   --color-brand-50: #f2f7f4;
   --color-brand-100: #dcebe2;
   --color-brand-200: #b9d7c7;

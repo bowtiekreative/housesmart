@@ -1,4 +1,4 @@
-# HomeSmart.ca — full stack for Dokploy (or any docker-compose host).
+# HouseSmart.ca — full stack for Dokploy (or any docker-compose host).
 #
 # Services:
 #   web        Astro SSR frontend + API routes        → expose port 4321
@@ -16,14 +16,14 @@ services:
     build: .
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgres://homesmart:${POSTGRES_PASSWORD:-homesmart}@postgres:5432/homesmart
+      DATABASE_URL: postgres://housesmart:${POSTGRES_PASSWORD:-housesmart}@postgres:5432/housesmart
       WP_URL: ${WP_URL:-http://wordpress}
-      SITE_URL: ${SITE_URL:-https://homesmart.ca}
+      SITE_URL: ${SITE_URL:-https://housesmart.ca}
       SMTP_HOST: ${SMTP_HOST:-}
       SMTP_PORT: ${SMTP_PORT:-587}
       SMTP_USER: ${SMTP_USER:-}
       SMTP_PASS: ${SMTP_PASS:-}
-      SMTP_FROM: ${SMTP_FROM:-HomeSmart.ca <no-reply@homesmart.ca>}
+      SMTP_FROM: ${SMTP_FROM:-HouseSmart.ca <no-reply@housesmart.ca>}
       LEADS_NOTIFY_EMAIL: ${LEADS_NOTIFY_EMAIL:-}
     ports:
       - "4321"
@@ -51,15 +51,15 @@ services:
     image: postgres:17-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: homesmart
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-homesmart}
-      POSTGRES_DB: homesmart
+      POSTGRES_USER: housesmart
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-housesmart}
+      POSTGRES_DB: housesmart
     volumes:
       - pg-data:/var/lib/postgresql/data
       # Schema auto-applies on first boot:
       - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U homesmart"]
+      test: ["CMD-SHELL", "pg_isready -U housesmart"]
       interval: 5s
       timeout: 5s
       retries: 10

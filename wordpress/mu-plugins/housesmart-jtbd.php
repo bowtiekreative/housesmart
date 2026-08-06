@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: HomeSmart JTBD Post Type
+ * Plugin Name: HouseSmart JTBD Post Type
  * Description: Registers the jtbd_posts custom post type and exposes all
  *              matrix/condition/lead fields over the REST API. Works with or
  *              without ACF — fields registered here mirror the ACF field group.

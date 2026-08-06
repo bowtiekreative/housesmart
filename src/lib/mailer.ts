@@ -25,7 +25,7 @@ export async function sendMail(input: MailInput): Promise<void> {
       : undefined,
   });
   await transport.sendMail({
-    from: process.env.SMTP_FROM || 'HomeSmart.ca <no-reply@homesmart.ca>',
+    from: process.env.SMTP_FROM || 'HouseSmart.ca <no-reply@housesmart.ca>',
     ...input,
   });
 }

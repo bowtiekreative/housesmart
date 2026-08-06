@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Deploys HomeSmart.ca to a Dokploy instance as a Compose service.
+# Deploys HouseSmart.ca to a Dokploy instance as a Compose service.
 #
 # Usage:
 #   export DOKPLOY_URL=https://dashboard.cauziva.com
@@ -32,13 +32,13 @@ api() {
     "$@"
 }
 
-echo "→ Creating project 'homesmart'..."
-PROJECT_JSON=$(api project.create -d '{"name":"homesmart","description":"HomeSmart.ca — programmatic SEO/GEO platform"}')
+echo "→ Creating project 'housesmart'..."
+PROJECT_JSON=$(api project.create -d '{"name":"housesmart","description":"HouseSmart.ca — programmatic SEO/GEO platform"}')
 PROJECT_ID=$(echo "$PROJECT_JSON" | grep -o '"projectId":"[^"]*"' | head -1 | cut -d'"' -f4)
 echo "  projectId: ${PROJECT_ID}"
 
 echo "→ Creating compose service..."
-COMPOSE_JSON=$(api compose.create -d "{\"name\":\"homesmart-stack\",\"projectId\":\"${PROJECT_ID}\",\"composeType\":\"docker-compose\"}")
+COMPOSE_JSON=$(api compose.create -d "{\"name\":\"housesmart-stack\",\"projectId\":\"${PROJECT_ID}\",\"composeType\":\"docker-compose\"}")
 COMPOSE_ID=$(echo "$COMPOSE_JSON" | grep -o '"composeId":"[^"]*"' | head -1 | cut -d'"' -f4)
 echo "  composeId: ${COMPOSE_ID}"
 
@@ -67,7 +67,7 @@ api compose.deploy -d "{\"composeId\":\"${COMPOSE_ID}\"}" > /dev/null
 cat <<DONE
 
 ✔ Deploy triggered. Next steps in the Dokploy UI (${DOKPLOY_URL}):
-  1. Watch the build logs on the 'homesmart-stack' service.
+  1. Watch the build logs on the 'housesmart-stack' service.
   2. Domains tab: map your site domain → service 'web' port 4321,
      and a CMS domain → service 'wordpress' port 80.
   3. Finish the WordPress installer at the CMS domain, create the bot user

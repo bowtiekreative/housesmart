@@ -1,4 +1,4 @@
-# HomeSmart.ca
+# HouseSmart.ca
 
 Programmatic SEO/GEO blog platform for construction and home-building innovations.
 Live RSS feeds → DeepSeek JTBD analysis → 6×6×6 morphological matrix → headless
@@ -52,7 +52,7 @@ npm run rss:process           # needs DEEPSEEK_API_KEY, WP_URL, WP_AUTH_KEY
 ## WordPress setup (headless CMS)
 
 1. Any WordPress 6.x install works (the compose file ships one).
-2. Copy `wordpress/mu-plugins/homesmart-jtbd.php` into `wp-content/mu-plugins/`
+2. Copy `wordpress/mu-plugins/housesmart-jtbd.php` into `wp-content/mu-plugins/`
    (the compose file mounts it automatically). This registers the `jtbd_posts`
    post type and exposes every matrix/condition/lead field over REST — no ACF
    required, but ACF Pro field groups with the same keys work too.
@@ -67,8 +67,8 @@ npm run rss:process           # needs DEEPSEEK_API_KEY, WP_URL, WP_AUTH_KEY
    (at minimum `DEEPSEEK_API_KEY`, `WP_AUTH_KEY`, `POSTGRES_PASSWORD`,
    `WP_DB_PASSWORD`, `SITE_URL`).
 3. **Domains tab** →
-   - `homesmart.ca` → service `web`, port `4321`
-   - `cms.homesmart.ca` → service `wordpress`, port `80`
+   - `housesmart.ca` → service `web`, port `4321`
+   - `cms.housesmart.ca` → service `wordpress`, port `80`
 4. Deploy. Postgres applies `db/schema.sql` on first boot; WordPress walks you
    through its 5-minute install at the CMS domain; then set `WP_URL` to the CMS
    domain and redeploy so the frontend and RSS worker read from it.
