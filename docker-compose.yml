@@ -25,8 +25,11 @@ services:
       SMTP_PASS: ${SMTP_PASS:-}
       SMTP_FROM: ${SMTP_FROM:-HouseSmart.ca <no-reply@housesmart.ca>}
       LEADS_NOTIFY_EMAIL: ${LEADS_NOTIFY_EMAIL:-}
-    ports:
+    expose:
       - "4321"
+    networks:
+      - dokploy-network
+      - internal
     depends_on:
       postgres:
         condition: service_healthy
@@ -44,6 +47,8 @@ services:
       RSS_FEEDS: ${RSS_FEEDS:-}
       MAX_ITEMS_PER_RUN: ${MAX_ITEMS_PER_RUN:-5}
       RSS_INTERVAL_MINUTES: ${RSS_INTERVAL_MINUTES:-360}
+    networks:
+      - internal
     depends_on:
       - wordpress
 
@@ -63,6 +68,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    networks:
+      - internal
 
   wordpress:
     image: wordpress:6-php8.3-apache
@@ -76,8 +83,11 @@ services:
       - wp-data:/var/www/html
       # jtbd_posts CPT + REST meta fields load automatically:
       - ./wordpress/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
-    ports:
+    expose:
       - "80"
+    networks:
+      - dokploy-network
+      - internal
     depends_on:
       - wp-db
 
@@ -91,8 +101,17 @@ services:
       MARIADB_RANDOM_ROOT_PASSWORD: "1"
     volumes:
       - wp-db-data:/var/lib/mysql
+    networks:
+      - internal
 
 volumes:
   pg-data:
   wp-data:
   wp-db-data:
+
+networks:
+  # Dokploy's Traefik proxy network — must exist on the host (Dokploy creates
+  # it). Only web + wordpress join it; everything else stays internal.
+  dokploy-network:
+    external: true
+  internal:
