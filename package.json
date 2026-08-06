@@ -1,0 +1,37 @@
+{
+  "name": "homesmart",
+  "version": "1.0.0",
+  "description": "HomeSmart.ca — programmatic SEO/GEO blog platform for construction & home-building innovations (JTBD engine)",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "start": "node ./dist/server/entry.mjs",
+    "rss:process": "tsx backend/rss-processor.ts",
+    "rss:loop": "tsx backend/rss-loop.ts",
+    "db:init": "tsx backend/db-init.ts"
+  },
+  "dependencies": {
+    "@astrojs/node": "^9.0.0",
+    "@astrojs/react": "^4.0.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "astro": "^5.0.0",
+    "marked": "^15.0.0",
+    "nodemailer": "^6.9.0",
+    "pg": "^8.13.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "rss-parser": "^3.13.0",
+    "tailwindcss": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/nodemailer": "^6.4.0",
+    "@types/pg": "^8.11.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

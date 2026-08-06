@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  /* HomeSmart.ca brand: deep spruce green + safety amber on warm neutrals */
+  --color-brand-50: #f2f7f4;
+  --color-brand-100: #dcebe2;
+  --color-brand-200: #b9d7c7;
+  --color-brand-300: #8dbca5;
+  --color-brand-400: #5e9c80;
+  --color-brand-500: #3f8065;
+  --color-brand-600: #2e6650;
+  --color-brand-700: #265242;
+  --color-brand-800: #204237;
+  --color-brand-900: #1b372e;
+  --color-brand-950: #0d1f1a;
+
+  --color-accent-400: #fbbf24;
+  --color-accent-500: #f59e0b;
+  --color-accent-600: #d97706;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Long-form article styling (rendered markdown) */
+.prose-article h2 {
+  @apply text-2xl font-bold text-brand-900 mt-10 mb-4;
+}
+.prose-article h3 {
+  @apply text-xl font-semibold text-brand-900 mt-8 mb-3;
+}
+.prose-article p {
+  @apply text-slate-700 leading-relaxed mb-5;
+}
+.prose-article ul,
+.prose-article ol {
+  @apply mb-5 pl-6 space-y-2 text-slate-700;
+}
+.prose-article ul {
+  @apply list-disc;
+}
+.prose-article ol {
+  @apply list-decimal;
+}
+.prose-article strong {
+  @apply text-brand-900;
+}
+.prose-article a {
+  @apply text-brand-600 underline underline-offset-2 hover:text-brand-700;
+}
+.prose-article code {
+  @apply bg-slate-100 px-1.5 py-0.5 rounded text-sm;
+}

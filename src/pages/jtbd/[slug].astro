@@ -1,0 +1,114 @@
+---
+import { marked } from 'marked';
+import Base from '../../layouts/Base.astro';
+import MorphologicalBadge from '../../components/MorphologicalBadge.astro';
+import BlueprintCard from '../../components/BlueprintCard.astro';
+import LeadCaptureForm from '../../components/LeadCaptureForm.astro';
+import SaveInnovationButton from '../../components/SaveInnovationButton.tsx';
+import { getPostBySlug } from '../../lib/wp';
+import { getCurrentUser, isBookmarked } from '../../lib/auth-bookmarks';
+
+const { slug } = Astro.params;
+const post = slug ? await getPostBySlug(slug) : null;
+if (!post) {
+  return new Response(null, { status: 404, statusText: 'Not found' });
+}
+
+let user = null;
+let initialSaved = false;
+try {
+  user = await getCurrentUser(Astro.cookies);
+  if (user) initialSaved = await isBookmarked(user.id, post.id);
+} catch {
+  // DB down — page still renders, save button routes to login.
+}
+
+const contentHtml = await marked.parse(post.content_markdown);
+const matrixNode = `${post.morphological_node.interrogative} / ${post.morphological_node.relational} / ${post.morphological_node.scale}`;
+const canonicalUrl = new URL(`/jtbd/${post.slug}`, Astro.site).href;
+
+// HowTo JSON-LD when we have actionable steps, wrapped with an Article node.
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.meta_description,
+    datePublished: post.date,
+    url: canonicalUrl,
+    author: { '@type': 'Organization', name: 'HomeSmart.ca' },
+    publisher: { '@type': 'Organization', name: 'HomeSmart.ca', url: 'https://homesmart.ca' },
+  },
+  ...(post.pre_conditions.length
+    ? [{
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: post.title,
+        description: post.meta_description,
+        tool: post.tools_resources.map((name) => ({ '@type': 'HowToTool', name })),
+        step: [
+          ...post.pre_conditions.map((text, i) => ({
+            '@type': 'HowToStep',
+            position: i + 1,
+            name: `Pre-condition ${i + 1}`,
+            text,
+          })),
+          {
+            '@type': 'HowToStep',
+            position: post.pre_conditions.length + 1,
+            name: post.action || 'Do the job',
+            text: `${post.action} ${post.object} — ${post.outcome}`.trim(),
+          },
+        ],
+      }]
+    : []),
+];
+
+Astro.response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=900, stale-while-revalidate=3600');
+---
+
+<Base title={post.meta_title} description={post.meta_description} jsonLd={jsonLd}>
+  <article class="mx-auto max-w-3xl px-4 sm:px-6 py-10">
+    <nav class="text-xs text-slate-500 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-brand-600">Innovations</a>
+      <span class="mx-1.5">/</span>
+      <span class="text-slate-700">{post.title}</span>
+    </nav>
+
+    <MorphologicalBadge node={post.morphological_node} showConcept />
+
+    <h1 class="mt-4 text-3xl sm:text-4xl font-black tracking-tight text-brand-950 leading-tight">
+      {post.title}
+    </h1>
+
+    <div class="mt-4 flex flex-wrap items-center gap-4">
+      <SaveInnovationButton
+        client:load
+        jtbdId={post.id}
+        slug={post.slug}
+        title={post.title}
+        matrixNode={matrixNode}
+        initialSaved={initialSaved}
+        loggedIn={!!user}
+      />
+      <time datetime={post.date} class="text-sm text-slate-500">
+        {new Date(post.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
+      </time>
+      {post.source_name && (
+        <span class="text-sm text-slate-400">
+          Source: {post.source_url ? <a href={post.source_url} rel="nofollow noopener" target="_blank" class="underline hover:text-brand-600">{post.source_name}</a> : post.source_name}
+        </span>
+      )}
+    </div>
+
+    <div class="mt-8">
+      <BlueprintCard post={post} />
+    </div>
+
+    <div class="prose-article mt-10 text-[1.05rem]" set:html={contentHtml} />
+
+    <div class="mt-12">
+      <LeadCaptureForm jtbdSlug={post.slug} heading="Want this handled on your build?" />
+    </div>
+  </article>
+</Base>

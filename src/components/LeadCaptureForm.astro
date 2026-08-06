@@ -1,0 +1,95 @@
+---
+/**
+ * Consultation form — connects high-intent readers with vendor partners.
+ * Posts to /api/leads; progressive enhancement handles inline success state.
+ */
+interface Props {
+  jtbdSlug?: string;
+  heading?: string;
+}
+
+const {
+  jtbdSlug = '',
+  heading = 'Want this done on your project?',
+} = Astro.props;
+---
+
+<section id="consult" class="rounded-2xl bg-brand-900 text-white overflow-hidden">
+  <div class="p-6 sm:p-8">
+    <h2 class="text-2xl font-bold mb-1">{heading}</h2>
+    <p class="text-brand-200 text-sm mb-6">
+      Tell us what you're building. We match you with a vetted vendor partner who has done this exact job — no call-centre runaround.
+    </p>
+
+    <form method="post" action="/api/leads" data-lead-form class="grid gap-4 sm:grid-cols-2">
+      <input type="hidden" name="jtbd_slug" value={jtbdSlug} />
+      <div>
+        <label for="lead-name" class="block text-xs font-semibold uppercase tracking-wider text-brand-300 mb-1.5">Name</label>
+        <input id="lead-name" name="name" required autocomplete="name"
+          class="w-full rounded-lg bg-brand-800 border border-brand-700 px-3.5 py-2.5 text-sm text-white placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-accent-400"
+          placeholder="Jamie Tremblay" />
+      </div>
+      <div>
+        <label for="lead-email" class="block text-xs font-semibold uppercase tracking-wider text-brand-300 mb-1.5">Email</label>
+        <input id="lead-email" name="email" type="email" required autocomplete="email"
+          class="w-full rounded-lg bg-brand-800 border border-brand-700 px-3.5 py-2.5 text-sm text-white placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-accent-400"
+          placeholder="you@example.com" />
+      </div>
+      <div>
+        <label for="lead-phone" class="block text-xs font-semibold uppercase tracking-wider text-brand-300 mb-1.5">Phone <span class="normal-case font-normal">(optional)</span></label>
+        <input id="lead-phone" name="phone" type="tel" autocomplete="tel"
+          class="w-full rounded-lg bg-brand-800 border border-brand-700 px-3.5 py-2.5 text-sm text-white placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-accent-400"
+          placeholder="(555) 555-0100" />
+      </div>
+      <div>
+        <label for="lead-project" class="block text-xs font-semibold uppercase tracking-wider text-brand-300 mb-1.5">Project type</label>
+        <select id="lead-project" name="project"
+          class="w-full rounded-lg bg-brand-800 border border-brand-700 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-accent-400">
+          <option value="new-build">New build</option>
+          <option value="renovation">Renovation</option>
+          <option value="addition">Addition</option>
+          <option value="repair">Repair / retrofit</option>
+          <option value="other">Something else</option>
+        </select>
+      </div>
+      <div class="sm:col-span-2">
+        <label for="lead-message" class="block text-xs font-semibold uppercase tracking-wider text-brand-300 mb-1.5">What are you trying to get done?</label>
+        <textarea id="lead-message" name="message" rows="3"
+          class="w-full rounded-lg bg-brand-800 border border-brand-700 px-3.5 py-2.5 text-sm text-white placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-accent-400"
+          placeholder="e.g. 1,800 sq ft bungalow, want the rim joists sealed before insulation inspection in October..."></textarea>
+      </div>
+      <div class="sm:col-span-2 flex items-center gap-4">
+        <button type="submit"
+          class="bg-accent-500 hover:bg-accent-400 text-brand-950 font-bold px-6 py-2.5 rounded-lg text-sm transition-colors">
+          Request a consult
+        </button>
+        <p data-lead-status class="text-sm text-emerald-300 hidden" role="status"></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[data-lead-form]').forEach((form) => {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const status = form.querySelector<HTMLElement>('[data-lead-status]')!;
+      const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+      button.disabled = true;
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        status.textContent = "✓ Got it — a vendor partner will reach out within one business day.";
+        status.classList.remove('hidden', 'text-red-300');
+        status.classList.add('text-emerald-300');
+      } catch {
+        status.textContent = 'Something went wrong — try again or email hello@homesmart.ca.';
+        status.classList.remove('hidden', 'text-emerald-300');
+        status.classList.add('text-red-300');
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+</script>

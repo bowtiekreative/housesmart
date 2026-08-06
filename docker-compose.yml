@@ -1,0 +1,98 @@
+# HomeSmart.ca — full stack for Dokploy (or any docker-compose host).
+#
+# Services:
+#   web        Astro SSR frontend + API routes        → expose port 4321
+#   rss        RSS → DeepSeek → WordPress worker (looping)
+#   postgres   App data: users, sessions, bookmarks, leads
+#   wordpress  Headless CMS (jtbd_posts custom post type)
+#   wp-db      MariaDB for WordPress (WP requires MySQL-compatible DB)
+#
+# In Dokploy: create a Compose service from this repo, set the env vars from
+# .env.example in the Environment tab, and add domains for `web` (:4321)
+# and `wordpress` (:80).
+
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://homesmart:${POSTGRES_PASSWORD:-homesmart}@postgres:5432/homesmart
+      WP_URL: ${WP_URL:-http://wordpress}
+      SITE_URL: ${SITE_URL:-https://homesmart.ca}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-HomeSmart.ca <no-reply@homesmart.ca>}
+      LEADS_NOTIFY_EMAIL: ${LEADS_NOTIFY_EMAIL:-}
+    ports:
+      - "4321"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  rss:
+    build: .
+    restart: unless-stopped
+    command: ["npx", "tsx", "backend/rss-loop.ts"]
+    environment:
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY}
+      DEEPSEEK_BASE_URL: ${DEEPSEEK_BASE_URL:-https://api.deepseek.com/v1}
+      DEEPSEEK_MODEL: ${DEEPSEEK_MODEL:-deepseek-v4-flash}
+      WP_URL: ${WP_URL:-http://wordpress}
+      WP_AUTH_KEY: ${WP_AUTH_KEY}
+      RSS_FEEDS: ${RSS_FEEDS:-}
+      MAX_ITEMS_PER_RUN: ${MAX_ITEMS_PER_RUN:-5}
+      RSS_INTERVAL_MINUTES: ${RSS_INTERVAL_MINUTES:-360}
+    depends_on:
+      - wordpress
+
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: homesmart
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-homesmart}
+      POSTGRES_DB: homesmart
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      # Schema auto-applies on first boot:
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U homesmart"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  wordpress:
+    image: wordpress:6-php8.3-apache
+    restart: unless-stopped
+    environment:
+      WORDPRESS_DB_HOST: wp-db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${WP_DB_PASSWORD:-wordpress}
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wp-data:/var/www/html
+      # jtbd_posts CPT + REST meta fields load automatically:
+      - ./wordpress/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+    ports:
+      - "80"
+    depends_on:
+      - wp-db
+
+  wp-db:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: ${WP_DB_PASSWORD:-wordpress}
+      MARIADB_RANDOM_ROOT_PASSWORD: "1"
+    volumes:
+      - wp-db-data:/var/lib/mysql
+
+volumes:
+  pg-data:
+  wp-data:
+  wp-db-data:

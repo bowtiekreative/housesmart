@@ -1,0 +1,78 @@
+---
+/**
+ * The innovation blueprint: pre/post-conditions, tools, and the
+ * action → object → outcome chain, laid out as a job-site checklist.
+ */
+import type { JtbdPost } from '../lib/wp';
+
+interface Props {
+  post: JtbdPost;
+}
+
+const { post } = Astro.props;
+---
+
+<section aria-label="Innovation blueprint" class="rounded-2xl border border-brand-200 bg-white overflow-hidden">
+  <div class="bg-brand-900 px-5 py-3 flex items-center justify-between">
+    <h2 class="text-white font-bold text-sm uppercase tracking-wider">Innovation Blueprint</h2>
+    <span
+      class:list={[
+        'text-xs font-semibold px-2.5 py-1 rounded-full',
+        post.solution_status === 'Existing'
+          ? 'bg-emerald-400/20 text-emerald-300'
+          : 'bg-accent-400/20 text-accent-400',
+      ]}
+    >
+      {post.solution_status === 'Existing' ? '● Proven in the field' : '◐ Speculative concept'}
+    </span>
+  </div>
+
+  <div class="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-brand-100">
+    <div class="p-5">
+      <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Before you start</h3>
+      <ul class="space-y-2">
+        {post.pre_conditions.map((item) => (
+          <li class="flex gap-2 text-sm text-slate-700">
+            <span class="text-accent-500 font-bold shrink-0">□</span>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="p-5">
+      <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">When it's done right</h3>
+      <ul class="space-y-2">
+        {post.post_conditions.map((item) => (
+          <li class="flex gap-2 text-sm text-slate-700">
+            <span class="text-emerald-600 font-bold shrink-0">✓</span>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  {(post.action || post.object || post.outcome) && (
+    <div class="border-t border-brand-100 px-5 py-4 bg-brand-50">
+      <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">The job in one line</h3>
+      <div class="flex flex-wrap items-center gap-2 text-sm">
+        <span class="px-3 py-1.5 rounded-lg bg-brand-900 text-white font-semibold">{post.action}</span>
+        <span class="text-brand-400 font-bold" aria-hidden="true">→</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white ring-1 ring-brand-200 text-brand-900 font-medium">{post.object}</span>
+        <span class="text-brand-400 font-bold" aria-hidden="true">→</span>
+        <span class="px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-900 font-medium">{post.outcome}</span>
+      </div>
+    </div>
+  )}
+
+  {post.tools_resources.length > 0 && (
+    <div class="border-t border-brand-100 px-5 py-4">
+      <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Tools & resources</h3>
+      <div class="flex flex-wrap gap-1.5">
+        {post.tools_resources.map((tool) => (
+          <span class="text-xs font-medium bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full">🔧 {tool}</span>
+        ))}
+      </div>
+    </div>
+  )}
+</section>

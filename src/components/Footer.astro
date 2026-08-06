@@ -1,0 +1,40 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-brand-950 text-brand-200 mt-16">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 py-12 grid gap-10 sm:grid-cols-3">
+    <div>
+      <div class="flex items-center gap-2.5 mb-3">
+        <span class="grid place-items-center w-8 h-8 rounded-lg bg-accent-500 text-brand-950 font-black">H</span>
+        <span class="text-white font-bold text-lg">HomeSmart<span class="text-accent-400">.ca</span></span>
+      </div>
+      <p class="text-sm leading-relaxed text-brand-300 max-w-xs">
+        Construction and home-building news, decoded into practical innovation blueprints you can act on.
+      </p>
+    </div>
+
+    <div>
+      <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-3">Explore</h3>
+      <ul class="space-y-2 text-sm">
+        <li><a href="/" class="hover:text-white transition-colors">All Innovations</a></li>
+        <li><a href="/dashboard/saved" class="hover:text-white transition-colors">Your Saved Blueprints</a></li>
+        <li><a href="/#consult" class="hover:text-white transition-colors">Talk to a Vendor Partner</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-3">Account</h3>
+      <ul class="space-y-2 text-sm">
+        <li><a href="/login" class="hover:text-white transition-colors">Log in</a></li>
+        <li><a href="/signup" class="hover:text-white transition-colors">Create an account</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-brand-800">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-5 text-xs text-brand-400 flex flex-wrap justify-between gap-2">
+      <span>© {year} HomeSmart.ca — All rights reserved.</span>
+      <span>Built for builders, renovators, and people who read the code book for fun.</span>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,40 @@
+---
+/**
+ * Visual chip set for one node of the 6×6×6 morphological matrix.
+ * Each axis gets its own colour so returning readers learn the system fast.
+ */
+import type { MorphologicalNode } from '../lib/wp';
+
+interface Props {
+  node: MorphologicalNode;
+  showConcept?: boolean;
+}
+
+const { node, showConcept = false } = Astro.props;
+
+const axes = [
+  { label: 'Interrogative', value: node.interrogative, classes: 'bg-sky-100 text-sky-800 ring-sky-300' },
+  { label: 'Relational', value: node.relational, classes: 'bg-violet-100 text-violet-800 ring-violet-300' },
+  { label: 'Scale', value: node.scale, classes: 'bg-emerald-100 text-emerald-800 ring-emerald-300' },
+];
+---
+
+<div class="space-y-2">
+  <div class="flex flex-wrap items-center gap-1.5" title={`Matrix node: ${node.interrogative} × ${node.relational} × ${node.scale} (1 of 216)`}>
+    {axes.map((axis, i) => (
+      <>
+        {i > 0 && <span class="text-slate-400 text-xs font-bold" aria-hidden="true">×</span>}
+        <span class={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ring-1 ${axis.classes}`}>
+          <span class="sr-only">{axis.label}:</span>
+          {axis.value}
+        </span>
+      </>
+    ))}
+    <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium ml-1">1 of 216</span>
+  </div>
+  {showConcept && node.solution_concept && (
+    <p class="text-sm text-slate-600 italic border-l-2 border-violet-300 pl-3">
+      {node.solution_concept}
+    </p>
+  )}
+</div>

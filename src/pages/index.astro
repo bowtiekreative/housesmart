@@ -1,0 +1,122 @@
+---
+import Base from '../layouts/Base.astro';
+import MorphologicalBadge from '../components/MorphologicalBadge.astro';
+import LeadCaptureForm from '../components/LeadCaptureForm.astro';
+import { getAllPosts } from '../lib/wp';
+
+const posts = await getAllPosts();
+const interrogatives = ['Who', 'What', 'Where', 'When', 'Why', 'How'];
+
+// CDN/browser caching gives us ISR-like behaviour on this SSR route.
+Astro.response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=900, stale-while-revalidate=3600');
+---
+
+<Base
+  title="HomeSmart.ca — Construction Innovation Blueprints"
+  description="Daily construction and home-building news, decoded into practical Jobs-To-Be-Done blueprints with tools, conditions, and field-tested fixes."
+>
+  <!-- Hero -->
+  <section class="bg-brand-950 text-white">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20">
+      <p class="text-accent-400 font-semibold text-sm uppercase tracking-widest mb-3">Field notes, not fluff</p>
+      <h1 class="text-4xl sm:text-5xl font-black tracking-tight max-w-3xl leading-tight">
+        Construction news, decoded into <span class="text-accent-400">blueprints you can act on</span>.
+      </h1>
+      <p class="mt-5 text-brand-200 text-lg max-w-2xl leading-relaxed">
+        Every day we run industry news through a 216-node innovation matrix and publish the Jobs-To-Be-Done that matter — with pre-conditions, tools, and the practical fix up front.
+      </p>
+    </div>
+  </section>
+
+  <!-- Feed -->
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-10">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
+      <div class="relative flex-1">
+        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+        </svg>
+        <input
+          id="search"
+          type="search"
+          placeholder="Search innovations — try “concrete”, “air sealing”, “prefab”..."
+          class="w-full rounded-xl border border-slate-300 bg-white pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+          autocomplete="off"
+        />
+      </div>
+      <div class="flex flex-wrap gap-1.5" id="filters" role="group" aria-label="Filter by interrogative">
+        <button data-filter="" class="filter-chip px-3 py-1.5 rounded-full text-xs font-semibold ring-1 ring-slate-300 bg-brand-900 text-white" aria-pressed="true">All</button>
+        {interrogatives.map((i) => (
+          <button data-filter={i} class="filter-chip px-3 py-1.5 rounded-full text-xs font-semibold ring-1 ring-slate-300 bg-white text-slate-700 hover:ring-brand-500" aria-pressed="false">{i}</button>
+        ))}
+      </div>
+    </div>
+
+    <div id="feed" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post) => (
+        <article
+          class="feed-card group rounded-2xl border border-slate-200 bg-white p-5 flex flex-col hover:border-brand-400 hover:shadow-lg hover:shadow-brand-100 transition-all"
+          data-search={`${post.title} ${post.meta_description} ${post.tools_resources.join(' ')} ${post.action} ${post.object}`.toLowerCase()}
+          data-interrogative={post.morphological_node.interrogative}
+        >
+          <MorphologicalBadge node={post.morphological_node} />
+          <h2 class="mt-3 text-lg font-bold text-brand-950 leading-snug">
+            <a href={`/jtbd/${post.slug}`} class="hover:text-brand-600 transition-colors">
+              {post.title}
+            </a>
+          </h2>
+          <p class="mt-2 text-sm text-slate-600 leading-relaxed flex-1">{post.meta_description}</p>
+          <div class="mt-4 flex items-center justify-between text-xs text-slate-400">
+            <time datetime={post.date}>{new Date(post.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' })}</time>
+            <a href={`/jtbd/${post.slug}`} class="font-semibold text-brand-600 group-hover:text-brand-700">Read the blueprint →</a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <p id="no-results" class="hidden text-center text-slate-500 py-16">
+      Nothing matches that search. Try a broader term — or check back tomorrow, the feed updates daily.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 pb-4">
+    <LeadCaptureForm heading="Have a project that needs one of these fixes?" />
+  </section>
+</Base>
+
+<script>
+  // Instant client-side search + interrogative filter over the rendered feed.
+  const search = document.getElementById('search') as HTMLInputElement;
+  const cards = [...document.querySelectorAll<HTMLElement>('.feed-card')];
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('.filter-chip')];
+  const empty = document.getElementById('no-results')!;
+  let activeFilter = '';
+
+  function apply() {
+    const term = search.value.trim().toLowerCase();
+    let visible = 0;
+    for (const card of cards) {
+      const matchesTerm = !term || (card.dataset.search || '').includes(term);
+      const matchesFilter = !activeFilter || card.dataset.interrogative === activeFilter;
+      const show = matchesTerm && matchesFilter;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    }
+    empty.classList.toggle('hidden', visible > 0);
+  }
+
+  search.addEventListener('input', apply);
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      activeFilter = chip.dataset.filter || '';
+      chips.forEach((c) => {
+        const active = c === chip;
+        c.classList.toggle('bg-brand-900', active);
+        c.classList.toggle('text-white', active);
+        c.classList.toggle('bg-white', !active);
+        c.classList.toggle('text-slate-700', !active);
+        c.setAttribute('aria-pressed', String(active));
+      });
+      apply();
+    });
+  });
+</script>
