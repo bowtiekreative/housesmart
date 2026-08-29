@@ -14,6 +14,11 @@ const year = new Date().getFullYear();
       <a href="/login" class="hover:text-heading transition-colors no-underline text-muted">Log in</a>
       <a href="/signup" class="hover:text-heading transition-colors no-underline text-muted">Create an account</a>
     </nav>
-    <div>© {year} HouseSmart.ca · 216 matrix nodes · Fed daily</div>
+    <div class="flex flex-wrap gap-x-4">
+      <span>© {year} HouseSmart.ca · 216 matrix nodes · Fed daily</span>
+      <span class="text-muted">
+        · Powered by <a href="https://bowtiekreative.com" target="_blank" rel="noopener noreferrer" class="text-heading hover:text-accent-hover transition-colors no-underline">Bow Tie Kreative</a>
+      </span>
+    </div>
   </div>
 </footer>

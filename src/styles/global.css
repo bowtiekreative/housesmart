@@ -95,7 +95,7 @@ body {
 .graded::before { content: ''; position: absolute; inset: 0; z-index: 3; background-image: var(--grain-url); opacity: var(--grain-opacity); mix-blend-mode: overlay; pointer-events: none; }
 
 /* Buttons — one primary per viewport; secondary and ghost are unrationed */
-.btn { display: inline-block; background: var(--color-accent); color: #f5f7fa; border: 0; border-radius: 8px; padding: 13px 26px; font: 600 15px var(--font-sans); cursor: pointer; transition: background 200ms var(--ease-out); text-decoration: none; }
+.btn { display: inline-block; background: var(--color-accent); color: #ffffff; border: 0; border-radius: 8px; padding: 13px 26px; font: 600 15px var(--font-sans); cursor: pointer; transition: background 200ms var(--ease-out); text-decoration: none; }
 .btn:hover { background: var(--color-accent-hover); }
 .btn:active { background: var(--color-accent-press); }
 .btn.pill { border-radius: 999px; }
