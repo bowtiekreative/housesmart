@@ -68,47 +68,65 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=900, 
 ---
 
 <Base title={post.meta_title} description={post.meta_description} jsonLd={jsonLd}>
-  <article class="mx-auto max-w-3xl px-4 sm:px-6 py-10">
-    <nav class="text-xs text-slate-500 mb-6" aria-label="Breadcrumb">
-      <a href="/" class="hover:text-brand-600">Innovations</a>
-      <span class="mx-1.5">/</span>
-      <span class="text-slate-700">{post.title}</span>
-    </nav>
+  <article class="mx-auto max-w-[1200px] px-8">
+    <!-- BEAT 1 · V — the article header. Offset columns; the air is the design. -->
+    <div class="grid grid-cols-6 lg:grid-cols-12 gap-8 mt-20">
+      <div class="col-span-6 lg:col-start-3 lg:col-span-9">
+        <nav class="eyebrow !text-[10px]" aria-label="Breadcrumb" data-r>
+          <a href="/" class="no-underline text-muted hover:text-heading transition-colors">Innovations</a>
+          <span class="mx-1.5" aria-hidden="true">/</span>
+          <span>{post.morphological_node.interrogative} node</span>
+        </nav>
 
-    <MorphologicalBadge node={post.morphological_node} showConcept />
+        <h1 class="h1 mt-6 max-w-[880px]" data-r>{post.title}</h1>
 
-    <h1 class="mt-4 text-3xl sm:text-4xl font-black tracking-tight text-brand-950 leading-tight">
-      {post.title}
-    </h1>
+        <div class="mt-8" data-r>
+          <MorphologicalBadge node={post.morphological_node} showConcept />
+        </div>
 
-    <div class="mt-4 flex flex-wrap items-center gap-4">
-      <SaveInnovationButton
-        client:load
-        jtbdId={post.id}
-        slug={post.slug}
-        title={post.title}
-        matrixNode={matrixNode}
-        initialSaved={initialSaved}
-        loggedIn={!!user}
-      />
-      <time datetime={post.date} class="text-sm text-slate-500">
-        {new Date(post.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
-      </time>
-      {post.source_name && (
-        <span class="text-sm text-slate-400">
-          Source: {post.source_url ? <a href={post.source_url} rel="nofollow noopener" target="_blank" class="underline hover:text-brand-600">{post.source_name}</a> : post.source_name}
-        </span>
-      )}
+        <div class="mt-8 flex flex-wrap items-center gap-5" data-r>
+          <SaveInnovationButton
+            client:load
+            jtbdId={post.id}
+            slug={post.slug}
+            title={post.title}
+            matrixNode={matrixNode}
+            initialSaved={initialSaved}
+            loggedIn={!!user}
+          />
+          <time datetime={post.date} class="eyebrow">
+            {new Date(post.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
+          </time>
+          {post.source_name && (
+            <span class="eyebrow">
+              Source → {post.source_url
+                ? <a href={post.source_url} rel="nofollow noopener" target="_blank" class="text-muted no-underline hover:text-heading transition-colors">{post.source_name}</a>
+                : post.source_name}
+            </span>
+          )}
+        </div>
+      </div>
     </div>
 
-    <div class="mt-8">
-      <BlueprintCard post={post} />
+    <!-- BEAT 2 · G — the blueprint panel on the surface tone -->
+    <div class="grid grid-cols-6 lg:grid-cols-12 gap-8 mt-24">
+      <div class="col-span-6 lg:col-start-3 lg:col-span-9" data-r>
+        <BlueprintCard post={post} />
+      </div>
     </div>
 
-    <div class="prose-article mt-10 text-[1.05rem]" set:html={contentHtml} />
+    <!-- BEAT 3 · R — the prose rail. Offset measure, ~65ch. -->
+    <div class="grid grid-cols-6 lg:grid-cols-12 gap-8 mt-24">
+      <div class="col-span-6 lg:col-start-3 lg:col-span-7" data-r>
+        <div class="prose-article" set:html={contentHtml} />
+      </div>
+    </div>
 
-    <div class="mt-12">
-      <LeadCaptureForm jtbdSlug={post.slug} heading="Want this handled on your build?" />
+    <!-- BEAT 4 · W — the ask, on a backlit panel. 192px of air before it. -->
+    <div class="grid grid-cols-6 lg:grid-cols-12 gap-8 mt-48 mb-8">
+      <div class="col-span-6 lg:col-start-3 lg:col-span-9" data-r>
+        <LeadCaptureForm jtbdSlug={post.slug} heading="Want this handled on your build?" />
+      </div>
     </div>
   </article>
 </Base>

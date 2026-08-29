@@ -1,7 +1,7 @@
 ---
 /**
- * Visual chip set for one node of the 6×6×6 morphological matrix.
- * Each axis gets its own colour so returning readers learn the system fast.
+ * One node of the 6×6×6 morphological matrix as hairline pills with literal
+ * → arrows between the axes — the copy's transformation grammar, not colour.
  */
 import type { MorphologicalNode } from '../lib/wp';
 
@@ -11,29 +11,31 @@ interface Props {
 }
 
 const { node, showConcept = false } = Astro.props;
-
 const axes = [
-  { label: 'Interrogative', value: node.interrogative, classes: 'bg-sky-100 text-sky-800 ring-sky-300' },
-  { label: 'Relational', value: node.relational, classes: 'bg-violet-100 text-violet-800 ring-violet-300' },
-  { label: 'Scale', value: node.scale, classes: 'bg-emerald-100 text-emerald-800 ring-emerald-300' },
+  { label: 'Interrogative', value: node.interrogative },
+  { label: 'Relational', value: node.relational },
+  { label: 'Scale', value: node.scale },
 ];
 ---
 
-<div class="space-y-2">
-  <div class="flex flex-wrap items-center gap-1.5" title={`Matrix node: ${node.interrogative} × ${node.relational} × ${node.scale} (1 of 216)`}>
+<div>
+  <div
+    class="flex flex-wrap items-center gap-2"
+    title={`Matrix node: ${node.interrogative} × ${node.relational} × ${node.scale} — 1 of 216`}
+  >
     {axes.map((axis, i) => (
       <>
-        {i > 0 && <span class="text-slate-400 text-xs font-bold" aria-hidden="true">×</span>}
-        <span class={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ring-1 ${axis.classes}`}>
+        {i > 0 && <span class="text-muted text-[13px]" aria-hidden="true">→</span>}
+        <span class="badge-rp">
           <span class="sr-only">{axis.label}:</span>
           {axis.value}
         </span>
       </>
     ))}
-    <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium ml-1">1 of 216</span>
+    <span class="eyebrow ml-2 !text-[10px]">Node 1 of 216</span>
   </div>
   {showConcept && node.solution_concept && (
-    <p class="text-sm text-slate-600 italic border-l-2 border-violet-300 pl-3">
+    <p class="mt-4 pl-5 border-l text-[15px] text-body max-w-[560px]" style="border-color:var(--hairline)">
       {node.solution_concept}
     </p>
   )}

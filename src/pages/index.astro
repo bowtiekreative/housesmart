@@ -1,7 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import MorphologicalBadge from '../components/MorphologicalBadge.astro';
-import LeadCaptureForm from '../components/LeadCaptureForm.astro';
 import { getAllPosts } from '../lib/wp';
 
 const posts = await getAllPosts();
@@ -15,73 +13,134 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=900, 
   title="HouseSmart.ca — Construction Innovation Blueprints"
   description="Daily construction and home-building news, decoded into practical Jobs-To-Be-Done blueprints with tools, conditions, and field-tested fixes."
 >
-  <!-- Hero -->
-  <section class="bg-brand-950 text-white">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20">
-      <p class="text-accent-400 font-semibold text-sm uppercase tracking-widest mb-3">Field notes, not fluff</p>
-      <h1 class="text-4xl sm:text-5xl font-black tracking-tight max-w-3xl leading-tight">
-        Construction news, decoded into <span class="text-accent-400">blueprints you can act on</span>.
-      </h1>
-      <p class="mt-5 text-brand-200 text-lg max-w-2xl leading-relaxed">
-        Every day we run industry news through a 216-node innovation matrix and publish the Jobs-To-Be-Done that matter — with pre-conditions, tools, and the practical fix up front.
-      </p>
+  <!-- BEAT 1 · W — establishing shot, 3:1 cinema frame, graded still, flood on the type side -->
+  <div class="mx-auto max-w-[1200px] px-8 mt-12">
+    <div class="banner graded" data-r>
+      <div class="media" style="background-image:url('https://images.unsplash.com/photo-1542642839-83adadcbe645?q=80&w=2400&auto=format&fit=crop')"></div>
+      <div class="flood"></div>
+      <div class="cap py-12">
+        <div class="eyebrow" style="color:rgba(245,247,250,.8)">Field notes, not fluff</div>
+        <h1 class="hero-title mt-4">Construction news, decoded into blueprints you can act on.</h1>
+        <a href="#feed" class="btn pill mt-7 inline-block">Browse the feed</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- BEAT 2 · R — asymmetric proof rail: copy 1–10, stats 10–13 -->
+  <section class="mx-auto max-w-[1200px] px-8 mt-32">
+    <div class="grid grid-cols-6 lg:grid-cols-12 gap-8">
+      <div class="col-span-6 lg:col-span-9">
+        <div class="eyebrow accent" data-r>The engine</div>
+        <h2 class="h2 mt-4 max-w-[800px]" data-r>Every story runs through a 216-node morphological matrix.</h2>
+        <p class="mt-6 text-[18px] text-heading max-w-[620px]" data-r>
+          Interrogative × relational × scale. The machine reads the news; the matrix finds the angle a site supervisor would actually use. You get the job, the conditions, and the fix — up front.
+        </p>
+      </div>
+      <div class="col-span-6 lg:col-span-3 grid gap-8 content-end">
+        <div class="stat" data-r style="transition-delay:150ms"><div class="v">216</div><div class="l eyebrow">Matrix alternatives</div></div>
+        <div class="stat" data-r style="transition-delay:250ms"><div class="v">6×6×6</div><div class="l eyebrow">Axes per job</div></div>
+      </div>
     </div>
   </section>
 
-  <!-- Feed -->
-  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-10">
-    <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
-      <div class="relative flex-1">
-        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
-        </svg>
-        <input
-          id="search"
-          type="search"
-          placeholder="Search innovations — try “concrete”, “air sealing”, “prefab”..."
-          class="w-full rounded-xl border border-slate-300 bg-white pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-          autocomplete="off"
-        />
-      </div>
-      <div class="flex flex-wrap gap-1.5" id="filters" role="group" aria-label="Filter by interrogative">
-        <button data-filter="" class="filter-chip px-3 py-1.5 rounded-full text-xs font-semibold ring-1 ring-slate-300 bg-brand-900 text-white" aria-pressed="true">All</button>
+  <!-- BEAT 3 · V — the breath. Backlit stat band between hairlines. -->
+  <section class="mx-auto max-w-[1200px] px-8 mt-48">
+    <div class="statband" data-r>
+      <div class="stat"><div class="v">{posts.length}</div><div class="l eyebrow">Live blueprints</div></div>
+      <div class="stat"><div class="v">5</div><div class="l eyebrow">Feeds read daily</div></div>
+      <div class="stat"><div class="v">400–700</div><div class="l eyebrow">Words, zero filler</div></div>
+    </div>
+  </section>
+
+  <!-- BEAT 4 · G — the feed. Search + interrogative filter, cards on the surface tone. -->
+  <section id="feed" class="mx-auto max-w-[1200px] px-8 mt-32 scroll-mt-24">
+    <div class="eyebrow" data-r>The catalogue</div>
+    <h2 class="h2 mt-4" data-r>Latest innovations</h2>
+
+    <div class="mt-10 flex flex-col lg:flex-row lg:items-center gap-5" data-r>
+      <input
+        id="search"
+        type="search"
+        placeholder="Search — try concrete, air sealing, prefab"
+        class="field lg:max-w-[420px]"
+        autocomplete="off"
+      />
+      <div class="flex flex-wrap gap-2" id="filters" role="group" aria-label="Filter by interrogative">
+        <button data-filter="" class="filter-chip active" aria-pressed="true">All</button>
         {interrogatives.map((i) => (
-          <button data-filter={i} class="filter-chip px-3 py-1.5 rounded-full text-xs font-semibold ring-1 ring-slate-300 bg-white text-slate-700 hover:ring-brand-500" aria-pressed="false">{i}</button>
+          <button data-filter={i} class="filter-chip" aria-pressed="false">{i}</button>
         ))}
       </div>
     </div>
 
-    <div id="feed" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {posts.map((post) => (
+    <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post, i) => (
         <article
-          class="feed-card group rounded-2xl border border-slate-200 bg-white p-5 flex flex-col hover:border-brand-400 hover:shadow-lg hover:shadow-brand-100 transition-all"
+          class="feed-card card-rp p-7 flex flex-col"
+          data-r
+          style={`transition-delay:${(i % 3) * 100}ms`}
           data-search={`${post.title} ${post.meta_description} ${post.tools_resources.join(' ')} ${post.action} ${post.object}`.toLowerCase()}
           data-interrogative={post.morphological_node.interrogative}
         >
-          <MorphologicalBadge node={post.morphological_node} />
-          <h2 class="mt-3 text-lg font-bold text-brand-950 leading-snug">
-            <a href={`/jtbd/${post.slug}`} class="hover:text-brand-600 transition-colors">
+          <div class="eyebrow">
+            {post.morphological_node.interrogative} → {post.morphological_node.relational} → {post.morphological_node.scale}
+          </div>
+          <h3 class="h4 mt-3.5 !leading-snug">
+            <a href={`/jtbd/${post.slug}`} class="no-underline text-heading transition-colors hover:text-accent-hover">
               {post.title}
             </a>
-          </h2>
-          <p class="mt-2 text-sm text-slate-600 leading-relaxed flex-1">{post.meta_description}</p>
-          <div class="mt-4 flex items-center justify-between text-xs text-slate-400">
-            <time datetime={post.date}>{new Date(post.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' })}</time>
-            <a href={`/jtbd/${post.slug}`} class="font-semibold text-brand-600 group-hover:text-brand-700">Read the blueprint →</a>
+          </h3>
+          <p class="mt-3 text-[15px] flex-1" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">
+            {post.meta_description}
+          </p>
+          <div class="mt-6 pt-4 border-t flex items-center justify-between" style="border-color:var(--hairline-soft)">
+            <time datetime={post.date} class="eyebrow !text-[10px]">
+              {new Date(post.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' })}
+            </time>
+            <a href={`/jtbd/${post.slug}`} class="btn-ghost !text-[13px]">Read the blueprint</a>
           </div>
         </article>
       ))}
     </div>
 
-    <p id="no-results" class="hidden text-center text-slate-500 py-16">
-      Nothing matches that search. Try a broader term — or check back tomorrow, the feed updates daily.
+    <p id="no-results" class="hidden text-center text-muted py-20">
+      Nothing matches that search. Try a broader term — the feed updates daily.
     </p>
   </section>
 
-  <section class="mx-auto max-w-6xl px-4 sm:px-6 pb-4">
-    <LeadCaptureForm heading="Have a project that needs one of these fixes?" />
-  </section>
+  <!-- BEAT 5 · C — the cut. One blue scene, at the conversion point, last beat before the footer. -->
+  <div class="cut mt-48">
+    <div class="mx-auto max-w-[1200px] px-8 flex flex-wrap items-end justify-between gap-8">
+      <h2 class="h2 max-w-[680px]" data-r>Not a news feed. A library you build.</h2>
+      <a href="/signup" class="btn-invert" data-r>Start saving blueprints →</a>
+    </div>
+  </div>
 </Base>
+
+<style>
+  .hero-title {
+    font-size: clamp(34px, 4.4vw, 60px);
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    font-weight: 600;
+    color: #fff; /* pure-white exception: type sitting on imagery */
+    max-width: 720px;
+  }
+  .filter-chip {
+    font-size: 12px;
+    letter-spacing: var(--track-micro);
+    text-transform: uppercase;
+    color: var(--color-muted);
+    background: transparent;
+    border: 1px solid var(--hairline-soft);
+    border-radius: 999px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: border-color 200ms var(--ease-out), color 200ms var(--ease-out);
+  }
+  .filter-chip:hover { border-color: var(--hairline); color: var(--color-heading); }
+  .filter-chip.active { color: var(--color-heading); border-color: var(--hairline); background: var(--color-surface2); }
+</style>
 
 <script>
   // Instant client-side search + interrogative filter over the rendered feed.
@@ -110,10 +169,7 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=900, 
       activeFilter = chip.dataset.filter || '';
       chips.forEach((c) => {
         const active = c === chip;
-        c.classList.toggle('bg-brand-900', active);
-        c.classList.toggle('text-white', active);
-        c.classList.toggle('bg-white', !active);
-        c.classList.toggle('text-slate-700', !active);
+        c.classList.toggle('active', active);
         c.setAttribute('aria-pressed', String(active));
       });
       apply();

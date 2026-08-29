@@ -1,56 +1,171 @@
+/* HouseSmart.ca — Bow Tie Kreative / LAKA visual system.
+   Dark near-monochrome canvas, one rationed blue accent, Inter at two
+   weights, depth from hairlines and backlights (never shadows), one
+   grade over every photo. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* HouseSmart.ca brand: deep spruce green + safety amber on warm neutrals */
-  --color-brand-50: #f2f7f4;
-  --color-brand-100: #dcebe2;
-  --color-brand-200: #b9d7c7;
-  --color-brand-300: #8dbca5;
-  --color-brand-400: #5e9c80;
-  --color-brand-500: #3f8065;
-  --color-brand-600: #2e6650;
-  --color-brand-700: #265242;
-  --color-brand-800: #204237;
-  --color-brand-900: #1b372e;
-  --color-brand-950: #0d1f1a;
+  /* Base palette — everything blue-shifted, nothing pure black/white */
+  --color-canvas: #07090d;
+  --color-surface: #1a1d24;
+  --color-surface2: #23262f;
+  --color-heading: #f5f7fa;
+  --color-body: #c5c7ce;
+  --color-muted: #8a8d96;
+  --color-accent: #3f6ee9;
+  --color-accent-hover: #5b84ee;
+  --color-accent-press: #3259c4;
 
-  --color-accent-400: #fbbf24;
-  --color-accent-500: #f59e0b;
-  --color-accent-600: #d97706;
-
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: 'Inter', -apple-system, 'Segoe UI', sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
+:root {
+  /* Depth from light, never shadow */
+  --hairline: rgba(245, 247, 250, 0.15);
+  --hairline-soft: rgba(245, 247, 250, 0.08);
+  --backlight-top: radial-gradient(60% 50% at 50% 0%, rgba(255, 255, 255, 0.07), transparent 70%);
+  --backlight: radial-gradient(60% 50% at 50% 100%, rgba(255, 255, 255, 0.07), transparent 70%);
+  --glass-bg: rgba(7, 9, 13, 0.8);
+  --glass-blur: blur(16px);
+
+  /* Type tension: huge-tight against tiny-wide */
+  --track-micro: 0.12em;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --rise: 24px;
+  --media-bleed: 1.08;
+
+  /* Texture — the grade is the brand */
+  --grade-filter: saturate(0.85) contrast(0.92);
+  --grade-tint: linear-gradient(rgba(23, 32, 52, 0.25), rgba(23, 32, 52, 0.25));
+  --grain-opacity: 0.06;
+  --grain-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  --flood-canvas: linear-gradient(90deg, rgba(7, 9, 13, 0.92) 0%, rgba(7, 9, 13, 0.75) 35%, rgba(7, 9, 13, 0.1) 70%, transparent 100%);
+  --protect-bottom: linear-gradient(180deg, transparent 40%, rgba(7, 9, 13, 0.35) 70%, rgba(7, 9, 13, 0.85) 100%);
 }
 
-/* Long-form article styling (rendered markdown) */
-.prose-article h2 {
-  @apply text-2xl font-bold text-brand-900 mt-10 mb-4;
+html { scroll-behavior: smooth; }
+body {
+  background: var(--color-canvas);
+  color: var(--color-body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
-.prose-article h3 {
-  @apply text-xl font-semibold text-brand-900 mt-8 mb-3;
+
+/* Type scale — headlines compress, labels spread */
+.h1 { font-size: clamp(44px, 7vw, 80px); letter-spacing: -0.05em; line-height: 1.02; font-weight: 600; color: var(--color-heading); }
+.h2 { font-size: clamp(32px, 5vw, 56px); letter-spacing: -0.04em; line-height: 1.08; font-weight: 600; color: var(--color-heading); }
+.h3 { font-size: 32px; letter-spacing: -0.02em; line-height: 1.2; font-weight: 600; color: var(--color-heading); }
+.h4 { font-size: 22px; letter-spacing: -0.01em; line-height: 1.3; font-weight: 600; color: var(--color-heading); }
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: var(--track-micro);
+  text-transform: uppercase;
+  color: var(--color-muted);
+  font-weight: 400;
 }
-.prose-article p {
-  @apply text-slate-700 leading-relaxed mb-5;
+.eyebrow.accent { color: var(--color-accent); }
+
+/* Atmosphere — huge slow backlights behind everything */
+.atmo { position: fixed; inset: -10%; z-index: -1; pointer-events: none; overflow: hidden; }
+.atmo i { position: absolute; border-radius: 50%; display: block; }
+.atmo i:nth-child(1) { left: 2%; top: -14%; width: 70vw; height: 70vw; background: radial-gradient(circle, rgba(245, 247, 250, 0.06), transparent 60%); animation: atmo-1 42s ease-in-out infinite alternate; }
+.atmo i:nth-child(2) { right: -8%; top: 32%; width: 58vw; height: 58vw; background: radial-gradient(circle, rgba(63, 110, 233, 0.07), transparent 60%); animation: atmo-2 58s ease-in-out infinite alternate; }
+@keyframes atmo-1 { to { transform: translate3d(6%, 4%, 0) scale(1.1); } }
+@keyframes atmo-2 { to { transform: translate3d(-7%, -5%, 0) scale(1.08); } }
+.grain { position: fixed; inset: 0; z-index: 9; pointer-events: none; background-image: var(--grain-url); opacity: var(--grain-opacity); mix-blend-mode: overlay; }
+
+/* L8 — everything enters and everything exits */
+[data-r] { opacity: 0; transform: translateY(var(--rise)); transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out); }
+[data-r].in { opacity: 1; transform: none; }
+[data-r].above { opacity: 0; transform: translateY(calc(var(--rise) * -1)); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  [data-r] { opacity: 1 !important; transform: none !important; }
 }
-.prose-article ul,
-.prose-article ol {
-  @apply mb-5 pl-6 space-y-2 text-slate-700;
+
+/* L7 — one grade over every photo, no exceptions */
+.graded { position: relative; overflow: hidden; }
+.graded .media { position: absolute; inset: 0; background-size: cover; background-position: center; filter: var(--grade-filter); transform: scale(var(--media-bleed)); }
+.graded::after { content: ''; position: absolute; inset: 0; z-index: 1; background: var(--grade-tint); pointer-events: none; }
+.graded::before { content: ''; position: absolute; inset: 0; z-index: 3; background-image: var(--grain-url); opacity: var(--grain-opacity); mix-blend-mode: overlay; pointer-events: none; }
+
+/* Buttons — one primary per viewport; secondary and ghost are unrationed */
+.btn { display: inline-block; background: var(--color-accent); color: #f5f7fa; border: 0; border-radius: 8px; padding: 13px 26px; font: 600 15px var(--font-sans); cursor: pointer; transition: background 200ms var(--ease-out); text-decoration: none; }
+.btn:hover { background: var(--color-accent-hover); }
+.btn:active { background: var(--color-accent-press); }
+.btn.pill { border-radius: 999px; }
+.btn.sm { padding: 9px 18px; font-size: 13px; }
+.btn-secondary { display: inline-block; background: transparent; color: var(--color-heading); border: 1px solid var(--hairline); border-radius: 8px; padding: 12px 25px; font: 600 15px var(--font-sans); cursor: pointer; transition: border-color 200ms var(--ease-out); text-decoration: none; }
+.btn-secondary:hover { border-color: rgba(245, 247, 250, 0.35); }
+.btn-secondary.pill { border-radius: 999px; }
+.btn-secondary.sm { padding: 8px 17px; font-size: 13px; }
+.btn-ghost { color: var(--color-heading); font: 600 15px var(--font-sans); text-decoration: none; cursor: pointer; background: none; border: 0; padding: 0; transition: color 200ms var(--ease-out); }
+.btn-ghost::after { content: ' →'; color: var(--color-accent); }
+.btn-ghost:hover { color: var(--color-accent-hover); }
+
+/* Forms — hairline that turns accent on focus. No glow, no shadow. */
+.field-label { display: block; font-size: 12px; letter-spacing: var(--track-micro); text-transform: uppercase; color: var(--color-muted); margin-bottom: 8px; }
+.field {
+  width: 100%; background: var(--color-surface); color: var(--color-heading);
+  border: 1px solid var(--hairline-soft); border-radius: 8px;
+  padding: 12px 14px; font: 400 15px var(--font-sans);
+  transition: border-color 200ms var(--ease-out); outline: none;
 }
-.prose-article ul {
-  @apply list-disc;
-}
-.prose-article ol {
-  @apply list-decimal;
-}
-.prose-article strong {
-  @apply text-brand-900;
-}
-.prose-article a {
-  @apply text-brand-600 underline underline-offset-2 hover:text-brand-700;
-}
-.prose-article code {
-  @apply bg-slate-100 px-1.5 py-0.5 rounded text-sm;
-}
+.field::placeholder { color: var(--color-muted); }
+.field:focus { border-color: var(--color-accent); }
+select.field { appearance: none; }
+
+/* Cards — shadowless surface, hairline brightens on hover */
+.card-rp { background: var(--color-surface); border: 1px solid var(--hairline-soft); border-radius: 16px; transition: border-color 300ms var(--ease-out); }
+.card-rp:hover { border-color: var(--hairline); }
+
+/* Hairline pill badges */
+.badge-rp { display: inline-block; font-size: 11px; letter-spacing: var(--track-micro); text-transform: uppercase; color: var(--color-body); border: 1px solid var(--hairline-soft); border-radius: 999px; padding: 4px 12px; }
+
+/* The arrow list — never bullets */
+.alist { list-style: none; padding: 0; margin: 0; }
+.alist li { padding: 12px 0 12px 28px; position: relative; border-bottom: 1px solid var(--hairline-soft); font-size: 15px; }
+.alist li::before { content: '→'; position: absolute; left: 0; color: var(--color-accent); }
+.alist.quiet li::before { color: var(--color-muted); }
+
+/* Stat — oversized tight figure over a micro-label */
+.stat .v { font-size: 44px; font-weight: 600; letter-spacing: -0.03em; color: var(--color-heading); line-height: 1; }
+.stat .l { margin-top: 8px; }
+
+/* V — the breath: backlit stat band between hairlines */
+.statband { border-top: 1px solid var(--hairline-soft); border-bottom: 1px solid var(--hairline-soft); padding: 56px 0; background-image: var(--backlight-top); display: flex; gap: 64px; flex-wrap: wrap; }
+
+/* W — cinema banner, flood on the type side */
+.banner { position: relative; aspect-ratio: 3/1; min-height: 320px; border-radius: 32px; border: 1px solid var(--hairline-soft); display: flex; align-items: center; overflow: hidden; }
+.banner .flood { position: absolute; inset: 0; z-index: 2; background: var(--flood-canvas); }
+.banner .cap { position: relative; z-index: 4; padding: 0 48px; max-width: 820px; }
+@media (max-width: 900px) { .banner { aspect-ratio: auto; min-height: 0; padding: 48px 0; } .banner .cap { padding: 0 24px; } }
+
+/* C — the cut. One saturated blue scene per page, at the conversion point. */
+.cut { background: var(--color-accent); padding: 88px 0; }
+.cut .h2 { color: #fff; }
+.cut .btn-invert { display: inline-block; background: #f5f7fa; color: #07090d; border-radius: 999px; padding: 14px 28px; font: 600 15px var(--font-sans); text-decoration: none; transition: opacity 200ms var(--ease-out); }
+.cut .btn-invert:hover { opacity: 0.88; }
+
+/* Long-form article body — offset measure, quiet rhythm */
+.prose-article { max-width: 65ch; }
+.prose-article p { margin: 0 0 28px; font-size: 16px; line-height: 1.7; color: var(--color-body); }
+.prose-article > p:first-child { font-size: 18px; color: var(--color-heading); }
+.prose-article h2 { font-size: 32px; letter-spacing: -0.02em; line-height: 1.2; font-weight: 600; color: var(--color-heading); margin: 56px 0 20px; }
+.prose-article h3 { font-size: 22px; letter-spacing: -0.01em; font-weight: 600; color: var(--color-heading); margin: 40px 0 16px; }
+.prose-article ul, .prose-article ol { margin: 0 0 28px; padding: 0 0 0 2px; list-style: none; }
+.prose-article ul li, .prose-article ol li { padding: 10px 0 10px 26px; position: relative; border-bottom: 1px solid var(--hairline-soft); font-size: 15px; }
+.prose-article ul li::before { content: '→'; position: absolute; left: 0; color: var(--color-muted); }
+.prose-article ol { counter-reset: item; }
+.prose-article ol li { counter-increment: item; }
+.prose-article ol li::before { content: counter(item, decimal-leading-zero); position: absolute; left: 0; font-size: 11px; letter-spacing: var(--track-micro); color: var(--color-muted); top: 14px; }
+.prose-article strong { color: var(--color-heading); font-weight: 600; }
+.prose-article a { color: var(--color-accent-hover); text-decoration: none; }
+.prose-article a:hover { text-decoration: underline; }
+.prose-article code { background: var(--color-surface); border: 1px solid var(--hairline-soft); padding: 1px 6px; border-radius: 4px; font-size: 14px; }
+.prose-article blockquote { margin: 40px 0; padding-left: 24px; border-left: 2px solid var(--color-accent); font-size: 20px; color: var(--color-heading); }

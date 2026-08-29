@@ -1,7 +1,7 @@
 /**
- * Bookmark toggle with optimistic UI — the icon flips instantly, then the
- * server call confirms (and rolls back on failure). Logged-out users are
- * sent to /login with a return path.
+ * Bookmark toggle with optimistic UI — a hairline pill that flips instantly,
+ * then the server call confirms (and rolls back on failure). Saved state is
+ * marked by the accent arrow, not a colour flood.
  */
 import { useCallback, useState } from 'react';
 
@@ -59,28 +59,25 @@ export default function SaveInnovationButton({
       onClick={toggle}
       aria-pressed={saved}
       aria-label={saved ? 'Remove from saved innovations' : 'Save this innovation'}
-      className={[
-        'inline-flex items-center gap-2 rounded-lg font-semibold transition-all select-none',
-        compact ? 'px-2.5 py-1.5 text-xs' : 'px-4 py-2 text-sm',
-        saved
-          ? 'bg-amber-100 text-amber-800 ring-1 ring-amber-300 hover:bg-amber-200'
-          : 'bg-white text-slate-700 ring-1 ring-slate-300 hover:ring-amber-400 hover:text-amber-700',
-        busy ? 'opacity-70' : '',
-      ].join(' ')}
+      style={{
+        font: `600 ${compact ? 13 : 14}px var(--font-sans)`,
+        color: 'var(--color-heading)',
+        background: 'transparent',
+        border: `1px solid ${saved ? 'var(--color-accent)' : 'var(--hairline)'}`,
+        borderRadius: 999,
+        padding: compact ? '7px 16px' : '10px 22px',
+        cursor: 'pointer',
+        opacity: busy ? 0.7 : 1,
+        transition: 'border-color 200ms var(--ease-out)',
+      }}
     >
-      <svg
-        viewBox="0 0 24 24"
-        className={compact ? 'w-3.5 h-3.5' : 'w-4 h-4'}
-        fill={saved ? 'currentColor' : 'none'}
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-      </svg>
-      {saved ? 'Saved' : 'Save Innovation'}
+      {saved ? (
+        <>
+          Saved <span style={{ color: 'var(--color-accent)' }}>→</span>
+        </>
+      ) : (
+        'Save innovation'
+      )}
     </button>
   );
 }
