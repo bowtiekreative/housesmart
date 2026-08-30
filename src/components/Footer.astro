@@ -1,11 +1,15 @@
 ---
+import BrandSeal from './BrandSeal.astro';
 const year = new Date().getFullYear();
 ---
 
 <footer class="mt-32 border-t py-10" style="border-color:var(--hairline-soft)">
   <div class="mx-auto max-w-[1200px] px-8 flex flex-wrap justify-between gap-6 text-[13px] text-muted">
-    <div>
-      <div class="font-semibold tracking-[-0.03em] text-heading text-[15px]">HouseSmart.ca</div>
+    <div class="footer-brand">
+      <a href="/" class="footer-identity" aria-label="HouseSmart.ca home">
+        <BrandSeal />
+        <span>HOUSE<strong>SMART.CA</strong></span>
+      </a>
       <div class="eyebrow mt-1.5">Construction news → practical blueprints</div>
     </div>
     <nav class="flex flex-wrap items-start gap-x-7 gap-y-2">
@@ -22,3 +26,8 @@ const year = new Date().getFullYear();
     </div>
   </div>
 </footer>
+<style>
+  .footer-brand{display:flex;flex-direction:column;align-items:flex-start}
+  .footer-identity{display:inline-flex;align-items:center;gap:13px;color:var(--rp-heading);text-decoration:none;font-size:20px;font-weight:700;letter-spacing:.02em;line-height:1}
+  .footer-identity strong{color:var(--rp-accent)}
+</style>

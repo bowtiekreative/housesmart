@@ -1,4 +1,5 @@
 ---
+import BrandSeal from './BrandSeal.astro';
 interface Props { user: { email: string } | null; }
 const { user } = Astro.props;
 const menuItems = user
@@ -9,12 +10,12 @@ const menuItems = user
 <!-- LAKA v4.3 canonical four-item navigation: seal, site name, Menu, CTA. -->
 <div class="lka-nav" data-lka-nav>
   <header class="lka-bar">
-    <div class="lka-inner">
-      <a href="/" class="lka-seal" aria-label="HouseSmart.ca home">H</a>
+    <nav class="lka-inner" aria-label="Primary">
+      <a href="/" class="lka-seal" aria-label="HouseSmart.ca home"><BrandSeal /></a>
       <a href="/" class="lka-site-name"><span>HOUSE</span><strong>SMART.CA</strong></a>
       <button type="button" class="lka-menu" aria-expanded="false" aria-controls="housesmart-menu">Menu</button>
       <a href="/signup" class="lka-cta">Sign up</a>
-    </div>
+    </nav>
   </header>
   <div id="housesmart-menu" class="lka-panel" hidden>
     <nav aria-label="Primary navigation">
@@ -39,7 +40,7 @@ const menuItems = user
   .lka-nav{position:sticky;top:0;z-index:50;font-family:var(--font-sans)}
   .lka-bar{height:78px;background:var(--glass-bg);backdrop-filter:var(--glass-blur);border-bottom:1px solid var(--hairline-soft)}
   .lka-inner{max-width:1200px;height:100%;margin:auto;padding:0 32px;display:grid;grid-template-columns:34px auto auto auto;align-items:center;gap:13px}
-  .lka-seal{width:34px;height:34px;display:grid;place-items:center;border-radius:8px;background:var(--rp-accent);color:#fff;font-weight:700;text-decoration:none}
+  .lka-seal{width:34px;height:44px;display:grid;place-items:center;text-decoration:none}
   .lka-site-name{font-size:20px;font-weight:700;letter-spacing:.02em;text-decoration:none;white-space:nowrap;color:var(--rp-heading)}
   .lka-site-name strong{color:var(--rp-accent)}
   .lka-menu,.lka-cta{min-height:44px;border-radius:999px;padding:0 18px;font:600 14px var(--font-sans);cursor:pointer}
@@ -49,5 +50,5 @@ const menuItems = user
   .lka-panel{position:absolute;left:0;right:0;background:var(--glass-bg);border-bottom:1px solid var(--hairline);padding:20px 32px}
   .lka-panel nav{max-width:1200px;margin:auto;display:grid;gap:8px}
   .lka-panel a,.lka-panel button{display:flex;align-items:center;min-height:44px;padding:8px 12px;color:var(--rp-body);background:transparent;border:0;text-decoration:none;font:600 16px var(--font-sans);cursor:pointer}
-  @media(max-width:520px){.lka-inner{padding:0 10px;gap:7px}.lka-site-name{font-size:13px}.lka-menu,.lka-cta{padding:0 10px;font-size:12px}}
+  @media(max-width:520px){.lka-inner{grid-template-columns:24px minmax(0,1fr) auto auto;padding:0 10px;gap:7px}.lka-seal{width:24px}.lka-seal :global(svg){width:24px;height:24px}.lka-site-name{font-size:13px;line-height:1.05;white-space:normal}.lka-site-name span,.lka-site-name strong{display:block}.lka-menu,.lka-cta{padding:0 10px;font-size:12px}}
 </style>

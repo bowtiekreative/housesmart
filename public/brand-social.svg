@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#07090D"/>
+  <path d="M900 0h300v630H720Z" fill="#3F6EE9" opacity=".1"/>
+  <rect x="104" y="146" width="136" height="136" rx="32" fill="#3F6EE9"/>
+  <path d="m134 213 38-32 38 32v41h-76v-41Z" fill="none" stroke="#fff" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M172 183v71M149 231h46" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="172" cy="231" r="8" fill="#fff"/>
+  <text x="104" y="370" fill="#F5F7FA" font-family="Inter,Arial,sans-serif" font-size="72" font-weight="700" letter-spacing="2">HOUSE<tspan fill="#3F6EE9">SMART.CA</tspan></text>
+  <text x="108" y="438" fill="#C5C7CE" font-family="Inter,Arial,sans-serif" font-size="30">Construction intelligence, organized into practical blueprints.</text>
+</svg>
