@@ -1,4 +1,4 @@
-/* HouseSmart.ca — Bow Tie Kreative / LAKA visual system.
+/* HouseSmart.ca — Bow Tie Kreative / LAKA v4.3 visual system.
    Dark near-monochrome canvas, one rationed blue accent, Inter at two
    weights, depth from hairlines and backlights (never shadows), one
    grade over every photo. */
@@ -21,6 +21,15 @@
 }
 
 :root {
+  /* LAKA v4.3 canonical MCP tokens */
+  --rp-canvas:#07090D; --rp-surface:#0B0E14; --rp-raised:#1A1D24;
+  --rp-heading:#F5F7FA; --rp-body:#C5C7CE; --rp-accent:#3F6EE9;
+  --rp-accent-hover:#5A83EE; --rp-accent-press:#3459C4;
+  --rp-success:#3FA46A; --rp-warning:#C98A2E; --rp-danger:#D8574F;
+  --rp-hairline:rgba(245,247,250,.15); --rp-muted-text-floor:rgba(245,247,250,.55);
+  --rp-light-canvas:#EDEFF4; --rp-light-ink:#10131A;
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:20px; --space-6:24px; --space-7:32px; --space-8:40px; --space-9:56px; --space-10:80px;
+  --radius-control:8px; --radius-card:16px; --radius-panel:24px; --radius-media:32px; --radius-pill:999px;
   /* Depth from light, never shadow */
   --hairline: rgba(245, 247, 250, 0.15);
   --hairline-soft: rgba(245, 247, 250, 0.08);
@@ -47,6 +56,11 @@
 }
 
 html { scroll-behavior: smooth; }
+.skip-link{position:absolute;left:-9999px;top:0;z-index:1000;min-height:44px;padding:12px 20px;background:var(--rp-accent);color:#fff}
+.skip-link:focus{left:12px;top:12px}
+:focus-visible{outline:2px solid var(--rp-accent-hover);outline-offset:3px}
+button,a,input,select,textarea{min-height:44px}
+@media(max-width:320px){body{overflow-wrap:anywhere}.mx-auto{max-width:100%}.px-8{padding-left:12px;padding-right:12px}}
 body {
   background: var(--color-canvas);
   color: var(--color-body);

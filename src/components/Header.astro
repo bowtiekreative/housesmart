@@ -1,59 +1,53 @@
 ---
-interface Props {
-  user: { email: string } | null;
-}
+interface Props { user: { email: string } | null; }
 const { user } = Astro.props;
-const path = Astro.url.pathname;
-const siteName = "HouseSmart";
-const siteDomain = ".ca";
+const menuItems = user
+  ? [{ href: '/', label: 'Innovations' }, { href: '/dashboard/saved', label: 'Saved blueprints' }]
+  : [{ href: '/', label: 'Innovations' }, { href: '/login', label: 'Log in' }];
 ---
 
-<header
-  class="sticky top-0 z-50 border-b"
-  style="background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border-color:var(--hairline-soft)"
->
-  <div class="mx-auto max-w-[1200px] px-8 h-[72px] flex items-center justify-between gap-6">
-    <!-- 1 — seal, 2 — uppercase site name -->
-    <a href="/" class="flex items-center gap-3 no-underline min-h-[44px]" aria-label="HouseSmart.ca — home">
-      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true" focusable="false" class="flex-none text-heading">
-        <circle cx="14" cy="14" r="13" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.35" />
-        <text x="14" y="18" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor">H</text>
-      </svg>
-      <span class="text-[18px] font-semibold tracking-[0.02em] text-heading leading-none">
-        HOUSESMART<span class="text-muted">.CA</span>
-      </span>
-    </a>
-
-    <!-- 3 — Menu button (only if user is logged in), 4 — CTA -->
-    <div class="flex items-center gap-4">
-      <nav class="flex items-center gap-7">
-        <a
-          href="/"
-          class:list={['eyebrow transition-colors hover:!text-heading', path === '/' && '!text-heading']}
-        >
-          Innovations
-        </a>
-        {user ? (
-          <>
-            <a
-              href="/dashboard/saved"
-              class:list={['eyebrow transition-colors hover:!text-heading', path.startsWith('/dashboard') && '!text-heading']}
-            >
-              Saved
-            </a>
-            <form method="post" action="/api/auth/logout" class="m-0 hidden sm:block">
-              <button type="submit" class="eyebrow cursor-pointer bg-transparent border-0 p-0 transition-colors hover:!text-heading">
-                Log out
-              </button>
-            </form>
-          </>
-        ) : (
-          <>
-            <a href="/login" class="eyebrow transition-colors hover:!text-heading hidden sm:inline">Log in</a>
-          </>
-        )}
-      </nav>
-      <a href="/signup" class="btn sm" style="border-radius:999px">Sign up</a>
+<!-- LAKA v4.3 canonical four-item navigation: seal, site name, Menu, CTA. -->
+<div class="lka-nav" data-lka-nav>
+  <header class="lka-bar">
+    <div class="lka-inner">
+      <a href="/" class="lka-seal" aria-label="HouseSmart.ca home">H</a>
+      <a href="/" class="lka-site-name"><span>HOUSE</span><strong>SMART.CA</strong></a>
+      <button type="button" class="lka-menu" aria-expanded="false" aria-controls="housesmart-menu">Menu</button>
+      <a href="/signup" class="lka-cta">Sign up</a>
     </div>
+  </header>
+  <div id="housesmart-menu" class="lka-panel" hidden>
+    <nav aria-label="Primary navigation">
+      {menuItems.map((item) => <a href={item.href}>{item.label}</a>)}
+      {user && <form method="post" action="/api/auth/logout"><button type="submit">Log out</button></form>}
+    </nav>
   </div>
-</header>
+</div>
+<script>
+  const root = document.querySelector('[data-lka-nav]');
+  const button = root?.querySelector('button[aria-controls="housesmart-menu"]');
+  const panel = root?.querySelector('#housesmart-menu');
+  const close = () => { if (button && panel) { button.setAttribute('aria-expanded', 'false'); panel.hidden = true; } };
+  button?.addEventListener('click', () => {
+    const next = button.getAttribute('aria-expanded') !== 'true';
+    button.setAttribute('aria-expanded', String(next));
+    if (panel) panel.hidden = !next;
+  });
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape') { close(); button?.focus(); } });
+</script>
+<style>
+  .lka-nav{position:sticky;top:0;z-index:50;font-family:var(--font-sans)}
+  .lka-bar{height:78px;background:var(--glass-bg);backdrop-filter:var(--glass-blur);border-bottom:1px solid var(--hairline-soft)}
+  .lka-inner{max-width:1200px;height:100%;margin:auto;padding:0 32px;display:grid;grid-template-columns:34px auto auto auto;align-items:center;gap:13px}
+  .lka-seal{width:34px;height:34px;display:grid;place-items:center;border-radius:8px;background:var(--rp-accent);color:#fff;font-weight:700;text-decoration:none}
+  .lka-site-name{font-size:20px;font-weight:700;letter-spacing:.02em;text-decoration:none;white-space:nowrap;color:var(--rp-heading)}
+  .lka-site-name strong{color:var(--rp-accent)}
+  .lka-menu,.lka-cta{min-height:44px;border-radius:999px;padding:0 18px;font:600 14px var(--font-sans);cursor:pointer}
+  .lka-menu{margin-left:auto;border:1px solid var(--hairline);background:transparent;color:var(--rp-heading)}
+  .lka-menu[aria-expanded="true"]{border-color:var(--rp-accent)}
+  .lka-cta{display:inline-flex;align-items:center;background:var(--rp-accent);color:#fff;text-decoration:none}
+  .lka-panel{position:absolute;left:0;right:0;background:var(--glass-bg);border-bottom:1px solid var(--hairline);padding:20px 32px}
+  .lka-panel nav{max-width:1200px;margin:auto;display:grid;gap:8px}
+  .lka-panel a,.lka-panel button{display:flex;align-items:center;min-height:44px;padding:8px 12px;color:var(--rp-body);background:transparent;border:0;text-decoration:none;font:600 16px var(--font-sans);cursor:pointer}
+  @media(max-width:520px){.lka-inner{padding:0 10px;gap:7px}.lka-site-name{font-size:13px}.lka-menu,.lka-cta{padding:0 10px;font-size:12px}}
+</style>

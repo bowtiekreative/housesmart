@@ -11,6 +11,9 @@ interface Props {
 }
 
 const { title, description = 'Construction and home-building innovations, decoded into practical blueprints.', jsonLd } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const socialImage = 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1200&h=630&q=80';
+const defaultJsonLd = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'HouseSmart.ca', url: 'https://housesmart.ca', description };
 
 let user = null;
 try {
@@ -27,11 +30,15 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
+    <link rel="canonical" href={canonical.href} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="HouseSmart.ca" />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%233F6EE9'/%3E%3Ctext x='32' y='44' font-family='Inter,sans-serif' font-size='34' font-weight='600' fill='%23F5F7FA' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E" />
@@ -43,15 +50,14 @@ try {
       gtag("js", new Date());
       gtag("config", "G-HOUSESMART");
     </script>
-    {jsonLd && (
-      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-    )}
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd ?? defaultJsonLd)} />
   </head>
-  <body class="min-h-screen bg-canvas text-body flex flex-col text-[16px] leading-[1.7]">
+  <body data-laka-version="4.3" class="min-h-screen bg-canvas text-body flex flex-col text-[16px] leading-[1.7]">
     <div class="atmo" aria-hidden="true"><i></i><i></i></div>
     <div class="grain" aria-hidden="true"></div>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <Header user={user} />
-    <main class="flex-1">
+    <main id="main-content" class="flex-1">
       <slot />
     </main>
     <Footer />
